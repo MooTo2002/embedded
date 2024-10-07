@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="약 정보 및 알림 시스템 및 개인 웹사이트">
+    <title>약 정보 및 개인 웹사이트</title>
+    <link rel="stylesheet" href="css/style2.css">
+</head>
+<body>
+    <header>
+        <h1>약 정보 및 알림 시스템 약 PT</h1>
+        <nav>
+            <ul>
+                <li><a href="#사용자정보">사용자정보</a></li>
+                <li><a href="#search-section">약 검색</a></li>
+                <li><a href="#reminder-section">알림 설정</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- 사용자 정보 입력 및 저장 섹션 -->
+    <section id="사용자정보">
+        <h2>사용자 정보를 입력하고 저장하세요</h2>
+        <form id="user-info-form">
+            <label for="name">이름:</label><br>
+            <input type="text" id="name" name="name" placeholder="이름 입력" required><br>
+
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email" placeholder="이메일 입력" required><br>
+
+            <input type="submit" value="저장">
+        </form>
+        
+        <!-- 저장된 사용자 정보가 표시될 영역 -->
+        <div id="user-info-display"></div>
+    </section>
+
+    <section id="search-section">
+        <h2>약 검색</h2>
+        <input type="text" id="search-input" placeholder="약 이름을 입력하세요">
+        <button onclick="searchDrug()">검색</button>
+        <div id="drug-info"></div>
+    </section>
+
+       <!-- 증상으로 약물 검색 섹션 -->
+    <section id="search-section-symptom">
+        <h2>증상으로 검색</h2>
+        <input type="text" id="search-input-symptom" placeholder="증상을 입력하세요">
+        <button onclick="searchDrugBySymptom()">검색</button>
+        <div id="drug-info-symptom"></div>
+    </section>
+    
+        <!-- 약물 상세정보 -->
+    <section id="drug-detail-section">
+        <h2>약물 상세정보</h2>
+        <input type="text" id="search-detail-input" placeholder="약 이름을 입력하세요">
+        <button onclick="searchDrugDetail()">상세정보 검색</button>
+        <div id="drug-detail-info"></div>
+    </section>
+    
+    <script src="js/데이터.js"></script>
+    <script src="js/약검색.js"></script>
+    <script src="js/상세정보.js"></script>
+    <script src="js/증상검색.js"></script>
+    <script src="js/사용자정보.js"></script>
+</body>
+</html>
