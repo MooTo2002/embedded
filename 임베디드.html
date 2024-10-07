@@ -1,68 +1,70 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="약 정보 및 알림 시스템 및 개인 웹사이트">
-    <title>약 정보 및 개인 웹사이트</title>
-    <link rel="stylesheet" href="css/style2.css">
+    <meta charset="UTF-8"> <!-- 인코딩 설정 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 다양한 디바이스에 화면을 맞추기 위한 초기 설정 -->
+    <meta name="description" content="약 정보 및 알림 시스템 및 개인 웹사이트"> <!-- 웹사이트의 설명을 명시하는 메타 태그 -->
+    <title>약 정보 및 개인 웹사이트</title> <!-- 웹페이지의 제목 -->
+    <link rel="stylesheet" href="css/style.css"> <!-- CSS 파일 연결 -->
 </head>
 <body>
     <header>
-        <h1>약 정보 및 알림 시스템 약 PT</h1>
+        <h1>약 검색은 약 PT</h1> <!-- 페이지 상단 제목 -->
         <nav>
             <ul>
-                <li><a href="#사용자정보">사용자정보</a></li>
-                <li><a href="#search-section">약 검색</a></li>
-                <li><a href="#reminder-section">알림 설정</a></li>
-            </ul>
+                <li><a href="#사용자정보">사용자정보</a></li> <!-- 상단에서 '사용자정보'로 이동할 수 있는 링크 -->
+                <li><a href="#약검색">약 검색</a></li> <!-- 상단에서 '약 검색'으로 이동할 수 있는 링크 -->
+                <li><a href="#증상검색">증상 검색</a></li> <!-- 상단에서 '증상 검색'으로 이동할 수 있는 링크 -->
+                <li><a href="#상세정보">약물 상세정보</a></li> <!-- 상단에서 '약물 상세정보'로 이동할 수 있는 링크 -->
+              </ul>
         </nav>
     </header>
 
     <!-- 사용자 정보 입력 및 저장 섹션 -->
     <section id="사용자정보">
-        <h2>사용자 정보를 입력하고 저장하세요</h2>
-        <form id="user-info-form">
-            <label for="name">이름:</label><br>
-            <input type="text" id="name" name="name" placeholder="이름 입력" required><br>
+        <h2>사용자 정보를 입력하고 저장하세요</h2> <!-- 사용자 정보 제목 -->
+       <form id="user-info-form"> <!-- 사용자 정보 입력 폼 시작 -->
+    <label for="name">이름:</label><br> <!-- 이름 입력 필드의 레이블 -->
+    <input type="text" id="name" name="name" placeholder="이름 입력" required><br> <!-- 이름을 입력하는 텍스트 입력 필드 -->
 
-            <label for="email">Email:</label><br>
-            <input type="email" id="email" name="email" placeholder="이메일 입력" required><br>
+    <label for="email">Email:</label><br> <!-- 이메일 입력 필드의 레이블 -->
+    <input type="email" id="email" name="email" placeholder="이메일 입력" required><br> <!-- 이메일을 입력하는 텍스트 입력 필드 -->
 
-            <input type="submit" value="저장">
-        </form>
-        
-        <!-- 저장된 사용자 정보가 표시될 영역 -->
-        <div id="user-info-display"></div>
+    <input type="submit" value="로그인" id="login-btn"> <!-- 로그인 버튼 -->
+    <button type="button" id="logout-btn" style="display: none;">로그아웃</button> <!-- 로그아웃 버튼 -->
+</form>
+
+<!-- 저장된 사용자 정보가 표시될 영역 -->
+<div id="user-info-display"></div> <!-- 사용자 정보 저장 표시-->
     </section>
 
-    <section id="search-section">
-        <h2>약 검색</h2>
-        <input type="text" id="search-input" placeholder="약 이름을 입력하세요">
-        <button onclick="searchDrug()">검색</button>
-        <div id="drug-info"></div>
+    <section id="약검색">
+        <h2>약 검색</h2> <!-- '약 검색' 제목 -->
+        <input type="text" id="search-input" placeholder="약 이름을 입력하세요"> <!-- 약 이름을 입력하는 텍스트 입력 필드 -->
+        <button onclick="searchDrug()">검색</button> <!-- '검색' 버튼 클릭 시 'searchDrug' 함수 실행 -->
+        <div id="drug-info"></div> <!-- 검색된 약 정보가 표시될 영역 -->
     </section>
 
-       <!-- 증상으로 약물 검색 섹션 -->
-    <section id="search-section-symptom">
-        <h2>증상으로 검색</h2>
-        <input type="text" id="search-input-symptom" placeholder="증상을 입력하세요">
-        <button onclick="searchDrugBySymptom()">검색</button>
-        <div id="drug-info-symptom"></div>
-    </section>
-    
-        <!-- 약물 상세정보 -->
-    <section id="drug-detail-section">
-        <h2>약물 상세정보</h2>
-        <input type="text" id="search-detail-input" placeholder="약 이름을 입력하세요">
-        <button onclick="searchDrugDetail()">상세정보 검색</button>
-        <div id="drug-detail-info"></div>
+    <!-- 증상으로 약물 검색 섹션 -->
+    <section id="증상검색">
+        <h2>증상으로 검색</h2> <!-- '증상으로 검색' 제목 -->
+        <input type="text" id="search-input-symptom" placeholder="증상을 입력하세요"> <!-- 증상을 입력하는 텍스트 입력 필드 -->
+        <button onclick="searchDrugBySymptom()">검색</button> <!-- '검색' 버튼 클릭 시 'searchDrugBySymptom' 함수 실행 -->
+        <div id="drug-info-symptom"></div> <!-- 검색된 약 정보가 증상에 따라 표시될 영역 -->
     </section>
     
-    <script src="js/데이터.js"></script>
-    <script src="js/약검색.js"></script>
-    <script src="js/상세정보.js"></script>
-    <script src="js/증상검색.js"></script>
-    <script src="js/사용자정보.js"></script>
+    <!-- 약물 상세정보 -->
+    <section id="상세정보">
+        <h2>약물 상세정보</h2> <!-- '약물 상세정보'  제목 -->
+        <input type="text" id="search-detail-input" placeholder="약 이름을 입력하세요"> <!-- 약 이름을 입력할 수 있는 텍스트 입력 필드 -->
+        <button onclick="searchDrugDetail()">상세정보 검색</button> <!-- '상세정보 검색' 버튼 클릭 시 'searchDrugDetail' 함수 실행 -->
+        <div id="drug-detail-info"></div> <!-- 검색된 약물 상세 정보가 표시될 영역 -->
+    </section>
+    
+    <script src="js/데이터.js"></script> <!-- 데이터 JS 파일 연결 -->
+    <script src="js/약검색.js"></script> <!-- 약 검색 JS 파일 연결 -->
+    <script src="js/상세정보.js"></script> <!-- 약 상세 정보 JS 파일 연결 -->
+    <script src="js/증상검색.js"></script> <!-- 증상으로 약물 검색 JS 파일 연결 -->
+    <script src="js/사용자정보.js"></script> <!-- 사용자 정보 관련 JS 파일 연결 -->
 </body>
 </html>
