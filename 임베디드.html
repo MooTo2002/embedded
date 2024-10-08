@@ -34,7 +34,7 @@
         <button onclick="searchDrugBySymptom()">검색</button>
         <div id="drug-info-symptom"></div>
     </section>
-    
+
     <!-- 약물 상세정보 섹션 -->
     <section id="상세정보">
         <h2>약물 상세정보</h2>
@@ -42,10 +42,22 @@
         <button onclick="searchDrugDetail()">상세정보 검색</button>
         <div id="drug-detail-info"></div>
     </section>
+
+    <section id="편의기능">
+        <h2>어디가 아프신가요?</h2>
+        <input type="text" id="searchInput" placeholder="증상을 설명하세요. 예: 두통이 있어요">
+        <button onclick="searchDrug2()">검색</button>
+        <h3>검색 결과</h3>
+        <ul id="resultList"></ul>
+    </section>
     
+    <script src="js/편의기능.js"></script>
+    
+
     <script src="js/데이터.js"></script>
     <script src="js/약검색.js"></script>
     <script src="js/상세정보.js"></script>
     <script src="js/증상검색.js"></script>
+    <script src="js/편의기능.js"></script>
 </body>
 </html>
