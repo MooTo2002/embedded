@@ -12,7 +12,6 @@
         <h1>약 검색은 약 PT</h1>
         <nav>
             <ul>
-                <li><a href="#사용자정보">사용자정보</a></li>
                 <li><a href="#약검색">약 검색</a></li>
                 <li><a href="#증상검색">증상 검색</a></li>
                 <li><a href="#상세정보">약물 상세정보</a></li>
@@ -20,33 +19,6 @@
         </nav>
     </header>
 
-    <!-- 사용자 정보 입력 및 저장 섹션 -->
-    <section id="사용자정보">
-      <h2>사용자 정보를 입력하고 로그인하세요</h2>
-      <form id="user-info-form">
-          <label for="name">이름:</label><br>
-          <input type="text" id="name" name="name" placeholder="이름 입력" required><br>
-  
-          <label for="age">나이:</label><br>
-          <input type="number" id="age" name="age" placeholder="나이 입력" required><br>
-  
-          <label for="gender">성별:</label><br>
-          <select id="gender" name="gender" required>
-              <option value="">성별 선택</option>
-              <option value="남성">남성</option>
-              <option value="여성">여성</option>
-              <option value="기타">기타</option>
-          </select><br>
-  
-          <input type="submit" value="로그인" id="login-btn">
-      </form>
-  
-      <!-- 사용자 정보 표시 -->
-      <div id="user-info-display" style="display: none;"></div>
-  
-      <!-- 로그아웃 버튼을 사용자 정보 아래에 표시 -->
-      <button type="button" id="logout-btn" style="display: none; margin-top: 20px;">로그아웃</button>
-  </section>
     <!-- 약 검색 섹션 -->
     <section id="약검색">
         <h2>약 검색</h2>
@@ -75,6 +47,5 @@
     <script src="js/약검색.js"></script>
     <script src="js/상세정보.js"></script>
     <script src="js/증상검색.js"></script>
-    <script src="js/사용자정보.js"></script>
 </body>
 </html>
