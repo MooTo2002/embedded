@@ -1,0 +1,82 @@
+//1번기능
+
+#include <DS1302.h>
+
+#define CLK_PIN 4
+#define DAT_PIN 3
+#define RST_PIN 2
+
+// 7개의 LED 핀 정의 (월요일부터 일요일까지)
+#define LED1_PIN 6  
+#define LED2_PIN 7  
+#define LED3_PIN 8  
+#define LED4_PIN 9  
+#define LED5_PIN 10 
+#define LED6_PIN 11 
+#define LED7_PIN 12 
+
+DS1302 rtc(RST_PIN, DAT_PIN, CLK_PIN);
+
+int ledPins[] = {LED1_PIN, LED2_PIN, LED3_PIN, LED4_PIN, LED5_PIN, LED6_PIN, LED7_PIN};
+int ledIndex = 0;  // 현재 켜져야 하는 LED 인덱스
+
+int lastDay = -1;  // 마지막으로 확인한 요일을 저장하는 변수
+
+void setup() {
+  Serial.begin(9600);
+  
+  rtc.halt(false);  // RTC 모듈 시작
+  rtc.writeProtect(false);  // 쓰기 보호 해제
+
+  // LED 핀들을 출력으로 설정
+  for (int i = 0; i < 7; i++) {
+    pinMode(ledPins[i], OUTPUT);
+    digitalWrite(ledPins[i], LOW); // 초기에는 모든 LED 끄기
+  }
+
+  //rtc.setDOW(FRIDAY);  // 요일 설정 (주석 해제 시 설정 가능)
+  //rtc.setTime(14, 39, 10); // 시간 설정 (주석 해제 시 설정 가능)
+  //rtc.setDate(06, 12, 2024); // 날짜 설정 (주석 해제 시 설정 가능)
+}
+
+void loop() {
+  String currentDOW = rtc.getDOWStr();  // 현재 요일 문자열 가져오기
+
+  // 날짜, 요일, 시간 출력
+  Serial.print(rtc.getDateStr());
+  Serial.print("\t");
+  Serial.print(currentDOW);  // 요일 이름을 출력
+  Serial.print("\t");
+  Serial.println(rtc.getTimeStr());
+
+  // 현재 요일에 따라 LED 켜기
+  int currentDayIndex = getDayIndex(currentDOW);  // 요일 이름을 인덱스로 변환
+
+  // 요일이 바뀌었을 때
+  if (currentDayIndex != lastDay) {
+    // 이전에 켜졌던 LED 끄기
+    for (int i = 0; i < 7; i++) {
+      digitalWrite(ledPins[i], LOW);
+    }
+
+    // 새로운 요일에 해당하는 LED 켜기
+    digitalWrite(ledPins[currentDayIndex], HIGH);  // 현재 요일에 해당하는 LED 켬
+
+    // 마지막 요일을 현재 요일로 갱신
+    lastDay = currentDayIndex;
+  }
+
+  delay(1000);  // 1초 대기
+}
+
+// 요일 이름을 인덱스로 변환하는 함수
+int getDayIndex(String day) {
+  if (day == "Sunday") return 0;  // 일요일
+  if (day == "Monday") return 1;  // 월요일
+  if (day == "Tuesday") return 2; // 화요일
+  if (day == "Wednesday") return 3; // 수요일
+  if (day == "Thursday") return 4;  // 목요일
+  if (day == "Friday") return 5;  // 금요일
+  if (day == "Saturday") return 6; // 토요일
+  return -1;  // 오류 처리
+}
