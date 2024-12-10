@@ -1,0 +1,56 @@
+//2번기능
+
+#include <DS1302.h>
+
+#define CLK_PIN 4
+#define DAT_PIN 3
+#define RST_PIN 2
+#define BUZZER_PIN 5  // 부저 핀 정의 (예: 핀 5에 부저 연결)
+
+DS1302 rtc(RST_PIN, DAT_PIN, CLK_PIN);
+
+// 설정된 울리는 시간 (시, 분, 초)
+int targetHours[] = {15};   // 09:00:00, 14:00:00, 18:00:00
+int targetMinutes[] = {56};   // {설정한 분} (각각 0분)
+int targetSeconds[] = {44};   // {설정한 초} (각각 0초)
+
+void setup() {
+  Serial.begin(9600);
+  
+  rtc.halt(false);        // RTC 동작 시작
+  rtc.writeProtect(false); // 쓰기 보호 해제
+  
+  pinMode(BUZZER_PIN, OUTPUT);  // 부저 핀을 출력으로 설정
+  
+  // rtc.setDOW(TUESDAY);   // 요일 설정 (필요 시 주석 해제)
+  // rtc.setTime(14, 52, 0);  // 시간을 설정 (필요 시 주석 해제)
+  // rtc.setDate(15, 8, 2017); // 날짜 설정 (필요 시 주석 해제)
+}
+
+void loop() {
+  // RTC에서 시간 정보 얻기
+  String currentTime = rtc.getTimeStr(); // 예: "14:52:00"
+  
+  // 시간, 분, 초 분리
+  int currentHour = currentTime.substring(0, 2).toInt();
+  int currentMinute = currentTime.substring(3, 5).toInt();
+  int currentSecond = currentTime.substring(6, 8).toInt();
+
+  // 날짜, 요일, 시간 출력
+  Serial.print(rtc.getDateStr());
+  Serial.print("\t");
+  Serial.print(rtc.getDOWStr());
+  Serial.print("\t");
+  Serial.println(currentTime);
+
+  // 설정된 시간에 도달하면 부저 울리기
+  for (int i = 0; i < 3; i++) {
+    if (currentHour == targetHours[i] && currentMinute == targetMinutes[i] && currentSecond == targetSeconds[i]) {
+      digitalWrite(BUZZER_PIN, HIGH);  // 부저 울림
+      delay(1000);  // 1초간 울림 유지
+      digitalWrite(BUZZER_PIN, LOW);   // 부저 끄기
+    }
+  }
+
+  delay(1000); // 1초 대기
+}
