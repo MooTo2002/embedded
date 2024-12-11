@@ -1,0 +1,103 @@
+#include <DS1302.h>
+
+#define CLK_PIN 4
+#define DAT_PIN 3
+#define RST_PIN 2
+#define BUZZER_PIN 5  // 부저 핀 정의 (예: 핀 5에 부저 연결)
+
+// 7개의 LED 핀 정의 (월요일부터 일요일까지)
+#define LED1_PIN 6  
+#define LED2_PIN 7  
+#define LED3_PIN 8  
+#define LED4_PIN 9  
+#define LED5_PIN 10 
+#define LED6_PIN 11 
+#define LED7_PIN 12 
+
+DS1302 rtc(RST_PIN, DAT_PIN, CLK_PIN);
+
+int ledPins[] = {LED1_PIN, LED2_PIN, LED3_PIN, LED4_PIN, LED5_PIN, LED6_PIN, LED7_PIN};
+int ledIndex = 0;  // 현재 켜져야 하는 LED 인덱스
+int lastDay = -1;  // 마지막으로 확인한 요일을 저장하는 변수
+
+// 설정된 울리는 시간 (시, 분, 초)
+int targetHours[] = {16};   // 16:39:40
+int targetMinutes[] = {30};
+int targetSeconds[] = {00};
+
+void setup() {
+  Serial.begin(9600);
+  
+  rtc.halt(false);        // RTC 동작 시작
+  rtc.writeProtect(false); // 쓰기 보호 해제
+  
+  pinMode(BUZZER_PIN, OUTPUT);  // 부저 핀을 출력으로 설정
+
+  // LED 핀들을 출력으로 설정
+  for (int i = 0; i < 7; i++) {
+    pinMode(ledPins[i], OUTPUT);
+    digitalWrite(ledPins[i], LOW); // 초기에는 모든 LED 끄기
+  }
+
+  //rtc.setDOW(WEDNESDAY);   // 요일 설정 (필요 시 주석 해제)
+  //rtc.setTime(17, 18, 0);  // 시간을 설정 (필요 시 주석 해제)
+  //rtc.setDate(11, 12, 2024); // 날짜 설정 (필요 시 주석 해제)
+}
+
+void loop() {
+  // RTC에서 시간 정보 얻기
+  String currentTime = rtc.getTimeStr(); // 예: "14:52:00"
+  String currentDOW = rtc.getDOWStr();  // 현재 요일 문자열 가져오기
+
+  // 시간, 분, 초 분리
+  int currentHour = currentTime.substring(0, 2).toInt();
+  int currentMinute = currentTime.substring(3, 5).toInt();
+  int currentSecond = currentTime.substring(6, 8).toInt();
+
+  // 날짜, 요일, 시간 출력
+  Serial.print(rtc.getDateStr());
+  Serial.print("\t");
+  Serial.print(currentDOW);  // 요일 이름을 출력
+  Serial.print("\t");
+  Serial.println(currentTime);
+
+  // 현재 요일에 따라 LED 켜기
+  int currentDayIndex = getDayIndex(currentDOW);  // 요일 이름을 인덱스로 변환
+
+  // 요일이 바뀌었을 때
+  if (currentDayIndex != lastDay) {
+    // 이전에 켜졌던 LED 끄기
+    for (int i = 0; i < 7; i++) {
+      digitalWrite(ledPins[i], LOW);
+    }
+
+    // 새로운 요일에 해당하는 LED 켜기
+    digitalWrite(ledPins[currentDayIndex], HIGH);  // 현재 요일에 해당하는 LED 켬
+
+    // 마지막 요일을 현재 요일로 갱신
+    lastDay = currentDayIndex;
+  }
+
+  // 설정된 시간에 도달하면 부저 울리기
+  for (int i = 0; i < 3; i++) {
+    if (currentHour == targetHours[i] && currentMinute == targetMinutes[i] && currentSecond == targetSeconds[i]) {
+      digitalWrite(BUZZER_PIN, HIGH);  // 부저 울림
+      delay(1000);  // 1초간 울림 유지
+      digitalWrite(BUZZER_PIN, LOW);   // 부저 끄기
+    }
+  }
+
+  delay(1000); // 1초 대기
+}
+
+// 요일 이름을 인덱스로 변환하는 함수
+int getDayIndex(String day) {
+  if (day == "Sunday") return 0;  // 일요일
+  if (day == "Monday") return 1;  // 월요일
+  if (day == "Tuesday") return 2; // 화요일
+  if (day == "Wednesday") return 3; // 수요일
+  if (day == "Thursday") return 4;  // 목요일
+  if (day == "Friday") return 5;  // 금요일
+  if (day == "Saturday") return 6; // 토요일
+  return -1;  // 오류 처리
+}
