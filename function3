@@ -1,0 +1,62 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h> // LCD 라이브러리
+
+// LCD 설정 (주소 0x27, 16x2 크기)
+LiquidCrystal_I2C lcd(0x27, 16, 2);  
+
+// 버튼 핀 설정
+const int buttonPin = 9;
+int buttonState = 0;
+int lastButtonState = 0;
+
+// 약 이름과 초기 갯수 설정
+String medicineName = "Madicine: Tylenol";
+int medicineCount = 10; // 초기 약 갯수 (예: 10)
+
+void setup() {
+  // LCD 초기화 (인자 없이 호출)
+  lcd.begin();      
+  lcd.setBacklight(1);  // LCD 백라이트 켬
+  
+  // 버튼 핀을 입력으로 설정
+  pinMode(buttonPin, INPUT_PULLUP);
+
+  // LCD에 약 이름과 갯수 표시
+  displayMedicine();
+}
+
+void loop() {
+  // 버튼 상태 읽기
+  buttonState = digitalRead(buttonPin);
+
+  // 버튼이 눌렸을 때 (디바운싱 처리)
+  if (buttonState == LOW && lastButtonState == HIGH) {
+    delay(200); // 디바운싱을 위한 지연
+    
+    // 약 갯수를 하나 줄임
+    if (medicineCount > 0) {
+      medicineCount--;
+    }
+    
+    // 갯수가 0이 되면 다시 10개로 리셋
+    if (medicineCount == 0) {
+      medicineCount = 10;  // 약 갯수 리셋
+    }
+    
+    // 갯수가 변경되면 LCD에 다시 표시
+    displayMedicine();
+  }
+
+  // 마지막 버튼 상태 업데이트
+  lastButtonState = buttonState;
+}
+
+// LCD에 약 이름과 갯수 표시 함수
+void displayMedicine() {
+  lcd.clear();               // LCD 화면을 지움
+  lcd.setCursor(0, 0);       // 첫 번째 줄 첫 번째 열
+  lcd.print(medicineName);   // 약 이름 표시
+  lcd.setCursor(0, 1);       // 두 번째 줄 첫 번째 열
+  lcd.print("Count: ");       
+  lcd.print(medicineCount);  // 약 갯수 표시
+}
